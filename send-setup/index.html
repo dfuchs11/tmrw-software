@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Customer — TMRW Internal</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F5F5F5;
+      color: #111;
+      padding: 40px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #F55C00;
+      background: #FFF3EC;
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 32px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #E0E0E0;
+      border-radius: 8px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .card h2 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #F0F0F0;
+      font-size: 14px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label {
+      font-weight: 500;
+      color: #555;
+    }
+    .detail-value {
+      color: #111;
+      text-align: right;
+    }
+    .empty {
+      color: #CCC;
+      font-style: italic;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.12s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary {
+      background: #F55C00;
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #fff;
+      color: #111;
+      border: 1px solid #DDD;
+    }
+    .no-params {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">Internal</div>
+    <h1>Customer Setup</h1>
+    <p class="subtitle">Review the request details and trigger setup when ready.</p>
+
+    <div id="content"></div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    const business = params.get('business');
+    const email = params.get('email');
+    const content = document.getElementById('content');
+
+    if (!name && !business && !email) {
+      content.innerHTML = '<div class="no-params">No customer data provided. Use the link from the notification email.</div>';
+    } else {
+      content.innerHTML = `
+        <div class="card">
+          <h2>Request Details</h2>
+          <div class="detail-row">
+            <span class="detail-label">Name</span>
+            <span class="detail-value">${escapeHtml(name || '')}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Business</span>
+            <span class="detail-value">${escapeHtml(business || '')}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email</span>
+            <span class="detail-value">${escapeHtml(email || '')}</span>
+          </div>
+        </div>
+        <div class="actions">
+          <a href="https://usetmrw.com/request-access?name=${encodeURIComponent(name || '')}&business=${encodeURIComponent(business || '')}&email=${encodeURIComponent(email || '')}" class="btn btn-primary">Start Setup Flow</a>
+          <a href="mailto:${encodeURIComponent(email || '')}" class="btn btn-secondary">Email Customer</a>
+        </div>
+      `;
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

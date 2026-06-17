@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Access — TMRW</title>
+  <meta name="description" content="Request early access to TMRW — staff scheduling software built for independent facility operators." />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #F55C00;
+      --black: #111111;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 56px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo-dot { color: var(--orange); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: #CCCCCC;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.12s;
+    }
+
+    .nav-link:hover { color: var(--white); }
+
+    /* PAGE LAYOUT */
+    .page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      padding-top: 56px;
+    }
+
+    .page-left {
+      background: var(--black);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .page-left::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 10%; bottom: 10%;
+      width: 1px;
+      background: var(--orange);
+      opacity: 0.5;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+
+    .page-h1 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(40px, 4.5vw, 64px);
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+
+    .page-h1 .accent { color: var(--orange); }
+
+    .page-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #C8C8C8;
+      max-width: 400px;
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    .trust-points {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: #AAAAAA;
+    }
+
+    .trust-bullet {
+      width: 6px;
+      height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* FORM SIDE */
+    .page-right {
+      background: var(--white);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-wrapper {
+      max-width: 440px;
+    }
+
+    .form-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 24px;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #444444;
+      margin-bottom: 6px;
+    }
+
+    .field label .optional {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: normal;
+      color: #999999;
+      font-size: 11px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 11px 14px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--black);
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.12s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--orange);
+    }
+
+    .field input::placeholder {
+      color: #BBBBBB;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    #other-type-field {
+      display: none;
+      margin-top: 8px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      padding: 14px 28px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.12s;
+      margin-top: 28px;
+    }
+
+    .btn-submit:hover { opacity: 0.85; }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .form-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #999999;
+      text-align: center;
+    }
+
+    /* ERROR */
+    .field-error {
+      font-size: 12px;
+      color: #D32F2F;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field.has-error input,
+    .field.has-error select {
+      border-color: #D32F2F;
+    }
+
+    .field.has-error .field-error {
+      display: block;
+    }
+
+    /* SUCCESS STATE */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    .success-state.visible {
+      display: block;
+    }
+
+    .success-check {
+      width: 64px;
+      height: 64px;
+      background: var(--orange);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+
+    .success-check svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--white);
+      stroke-width: 2.5;
+      fill: none;
+    }
+
+    .success-h2 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .success-p {
+      font-size: 15px;
+      color: #555555;
+      line-height: 1.65;
+      max-width: 380px;
+      margin: 0 auto 32px;
+    }
+
+    .success-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--orange);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.12s;
+    }
+
+    .success-link:hover { opacity: 0.75; }
+
+    .success-link::after { content: '→'; }
+
+    /* SUBMIT ERROR */
+    .submit-error {
+      display: none;
+      background: #FFF5F5;
+      border: 1px solid #FFCCCC;
+      color: #D32F2F;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .submit-error.visible { display: block; }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 32px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      color: var(--white);
+    }
+
+    .footer-tagline {
+      font-size: 11px;
+      color: #666666;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .footer-links { display: flex; gap: 28px; }
+
+    .footer-link {
+      font-size: 12px;
+      color: #999999;
+      text-decoration: none;
+      transition: color 0.12s;
+      letter-spacing: 0.02em;
+    }
+
+    .footer-link:hover { color: var(--white); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-link { display: none; }
+      .page { grid-template-columns: 1fr; min-height: auto; }
+      .page-left { padding: 80px 32px 60px; }
+      .page-left::after { display: none; }
+      .page-right { padding: 60px 32px 80px; border-top: 3px solid var(--orange); }
+      .form-wrapper { max-width: 100%; }
+      footer { padding: 28px 32px; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .page-h1 { font-size: 36px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="logo">TMRW<span class="logo-dot">.</span></a>
+    <div class="nav-right">
+      <a href="/" class="nav-link">Home</a>
+    </div>
+  </nav>
+
+  <!-- PAGE -->
+  <section class="page">
+    <div class="page-left">
+      <p class="eyebrow">Early Access</p>
+      <h1 class="page-h1">Get your team<br>on <span class="accent">TMRW.</span></h1>
+      <p class="page-sub">Tell us a bit about your facility and we'll get you set up. Most teams are live within 24 hours.</p>
+      <div class="trust-points">
+        <div class="trust-item">
+          <div class="trust-bullet"></div>
+          <span>No credit card required</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-bullet"></div>
+          <span>Hands-on setup support from the founder</span>
+        </div>
+        <div class="trust-item">
+          <div class="trust-bullet"></div>
+          <span>Live within 24 hours</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-right">
+      <!-- FORM -->
+      <div class="form-wrapper" id="form-wrapper">
+        <h2 class="form-title">Request Access</h2>
+        <p class="form-subtitle">Fill out the form below and I'll personally get you set up.</p>
+
+        <form id="request-form" novalidate>
+          <div class="field">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Jane Smith" required />
+            <div class="field-error">Please enter your full name</div>
+          </div>
+
+          <div class="field">
+            <label for="business_name">Business Name</label>
+            <input type="text" id="business_name" name="business_name" placeholder="Apex Martial Arts" required />
+            <div class="field-error">Please enter your business name</div>
+          </div>
+
+          <div class="field">
+            <label for="business_type">Type of Business</label>
+            <select id="business_type" name="business_type" required>
+              <option value="" disabled selected>Select your facility type</option>
+              <option value="Martial Arts Studio">Martial Arts Studio</option>
+              <option value="Swim Club">Swim Club</option>
+              <option value="Gymnastics Academy">Gymnastics Academy</option>
+              <option value="Dance Studio">Dance Studio</option>
+              <option value="Fitness Studio">Fitness Studio</option>
+              <option value="Sports Facility">Sports Facility</option>
+              <option value="Birthday Party Venue">Birthday Party Venue</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="field-error">Please select your business type</div>
+          </div>
+
+          <div class="field" id="other-type-field">
+            <label for="business_type_other">Specify Your Business Type</label>
+            <input type="text" id="business_type_other" name="business_type_other" placeholder="e.g. Yoga Studio" />
+            <div class="field-error">Please specify your business type</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="num_employees">Employees</label>
+              <select id="num_employees" name="num_employees" required>
+                <option value="" disabled selected>Select</option>
+                <option value="1-5">1–5</option>
+                <option value="6-15">6–15</option>
+                <option value="16-30">16–30</option>
+                <option value="31-50">31–50</option>
+                <option value="50+">50+</option>
+              </select>
+              <div class="field-error">Required</div>
+            </div>
+
+            <div class="field">
+              <label for="num_locations">Locations</label>
+              <select id="num_locations" name="num_locations" required>
+                <option value="" disabled selected>Select</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3+">3+</option>
+              </select>
+              <div class="field-error">Required</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="jane@apexmartialarts.com" required />
+            <div class="field-error">Please enter a valid email address</div>
+          </div>
+
+          <div class="field">
+            <label for="phone">Phone Number <span class="optional">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" />
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">Request Access</button>
+          <div class="submit-error" id="submit-error"></div>
+          <p class="form-note">We'll be in touch within 24 hours.</p>
+        </form>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="success-state">
+        <div class="success-check">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h2 class="success-h2">You're on the list.</h2>
+        <p class="success-p">Thanks for requesting access. Check your inbox — I just sent you a confirmation. I'll be in touch within 24 hours to get you set up.</p>
+        <a href="/" class="success-link">Back to home</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <span class="footer-logo">TMRW<span class="logo-dot">.</span></span>
+      <span class="footer-tagline">Know Tomorrow</span>
+    </div>
+    <div class="footer-links">
+      <a href="/" class="footer-link">Home</a>
+      <a href="mailto:daniel@usetmrw.com" class="footer-link">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('request-form');
+    const formWrapper = document.getElementById('form-wrapper');
+    const successState = document.getElementById('success-state');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitError = document.getElementById('submit-error');
+    const businessType = document.getElementById('business_type');
+    const otherTypeField = document.getElementById('other-type-field');
+
+    // Show/hide "Other" text input
+    businessType.addEventListener('change', function () {
+      if (this.value === 'Other') {
+        otherTypeField.style.display = 'block';
+      } else {
+        otherTypeField.style.display = 'none';
+        document.getElementById('business_type_other').value = '';
+      }
+    });
+
+    // Validate a single field
+    function validateField(field) {
+      const parent = field.closest('.field');
+      if (!parent) return true;
+
+      let valid = true;
+
+      if (field.required && !field.value.trim()) {
+        valid = false;
+      }
+
+      if (field.type === 'email' && field.value.trim()) {
+        valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+      }
+
+      // "Other" type requires specification
+      if (field.id === 'business_type_other' && businessType.value === 'Other' && !field.value.trim()) {
+        valid = false;
+      }
+
+      parent.classList.toggle('has-error', !valid);
+      return valid;
+    }
+
+    // Clear error on input
+    form.querySelectorAll('input, select').forEach(function (el) {
+      el.addEventListener('input', function () {
+        this.closest('.field').classList.remove('has-error');
+        submitError.classList.remove('visible');
+      });
+      el.addEventListener('change', function () {
+        this.closest('.field').classList.remove('has-error');
+      });
+    });
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      submitError.classList.remove('visible');
+
+      // Validate all required fields
+      const fields = form.querySelectorAll('input[required], select[required]');
+      let allValid = true;
+      fields.forEach(function (f) {
+        if (!validateField(f)) allValid = false;
+      });
+
+      // Validate "Other" specification
+      if (businessType.value === 'Other') {
+        const otherInput = document.getElementById('business_type_other');
+        if (!otherInput.value.trim()) {
+          otherInput.closest('.field').classList.add('has-error');
+          allValid = false;
+        }
+      }
+
+      if (!allValid) return;
+
+      // Submit
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+
+      try {
+        const data = {
+          full_name: form.full_name.value.trim(),
+          business_name: form.business_name.value.trim(),
+          business_type: form.business_type.value,
+          business_type_other: form.business_type_other.value.trim(),
+          num_employees: form.num_employees.value,
+          num_locations: form.num_locations.value,
+          email: form.email.value.trim(),
+          phone: form.phone.value.trim(),
+        };
+
+        const res = await fetch('/api/send-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(function () { return {}; });
+          throw new Error(err.error || 'Something went wrong');
+        }
+
+        // Show success
+        formWrapper.style.display = 'none';
+        successState.classList.add('visible');
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Request Access';
+        submitError.textContent = err.message || 'Something went wrong. Please try again.';
+        submitError.classList.add('visible');
+      }
+    });
+  </script>
+
+</body>
+</html>

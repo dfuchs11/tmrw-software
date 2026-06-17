@@ -241,33 +241,40 @@
       margin-bottom: 20px;
     }
 
-    /* PROBLEM STRIP */
-    .problem-strip {
+    /* TICKER */
+    .ticker-wrap {
       background: var(--orange);
-      padding: 28px 64px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
       overflow: hidden;
-      flex-wrap: wrap;
-    }
-
-    .problem-strip-text {
-      font-family: 'Oswald', sans-serif;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--white);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      padding: 20px 0;
       white-space: nowrap;
     }
 
-    .strip-sep {
-      width: 4px;
-      height: 4px;
-      background: var(--white);
-      border-radius: 50%;
-      flex-shrink: 0;
+    .ticker {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+    }
+
+    .ticker:hover { animation-play-state: paused; }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 24px;
+    }
+
+    .ticker-sep {
+      color: rgba(255,255,255,0.5);
+      font-size: 13px;
+      margin: 0 4px;
     }
 
     /* PROBLEM SECTION */
@@ -660,15 +667,26 @@
     </div>
   </section>
 
-  <!-- ORANGE STRIP -->
-  <div class="problem-strip">
-    <span class="problem-strip-text">Independent Facility Operators</span>
-    <div class="strip-sep"></div>
-    <span class="problem-strip-text">Owner-Operated</span>
-    <div class="strip-sep"></div>
-    <span class="problem-strip-text">Classes · Events · Birthday Parties · Programs</span>
-    <div class="strip-sep"></div>
-    <span class="problem-strip-text">Know Tomorrow</span>
+  <!-- TICKER STRIP -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item">Independent Facility Operators</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Owner-Operated</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Classes · Events · Birthday Parties · Programs</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Know Tomorrow</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Independent Facility Operators</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Owner-Operated</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Classes · Events · Birthday Parties · Programs</span>
+      <span class="ticker-sep">•</span>
+      <span class="ticker-item">Know Tomorrow</span>
+      <span class="ticker-sep">•</span>
+    </div>
   </div>
 
   <!-- PROBLEM -->

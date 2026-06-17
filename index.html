@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TMRW — Know Tomorrow</title>
+  <meta name="description" content="Staff scheduling software built for independent facility operators. Give your team the clarity they deserve." />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #F55C00;
+      --black: #111111;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 56px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .logo-dot { color: var(--orange); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: #CCCCCC;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.12s;
+    }
+
+    .nav-link:hover { color: var(--white); }
+
+    .nav-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--orange);
+      padding: 8px 18px;
+      border-radius: 4px;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: opacity 0.12s;
+    }
+
+    .nav-btn:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+      padding-top: 56px;
+    }
+
+    .hero-left {
+      background: var(--black);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 10%; bottom: 10%;
+      width: 1px;
+      background: var(--orange);
+      opacity: 0.5;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+
+    .hero-h1 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(52px, 5.5vw, 80px);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+
+    .hero-h1 .accent { color: var(--orange); }
+
+    .hero-tagline {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: clamp(20px, 2vw, 28px);
+      color: var(--white);
+      margin-bottom: 40px;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: #C8C8C8;
+      max-width: 400px;
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      padding: 13px 28px;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: opacity 0.12s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; }
+
+    .btn-ghost {
+      font-size: 13px;
+      font-weight: 500;
+      color: #AAAAAA;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.12s;
+    }
+
+    .btn-ghost:hover { color: var(--white); }
+
+    .btn-ghost::after {
+      content: '→';
+      transition: transform 0.12s;
+    }
+
+    .btn-ghost:hover::after { transform: translateX(3px); }
+
+    /* Hero right */
+    .hero-right {
+      background: var(--white);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .founder-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 32px;
+    }
+
+    .founder-quote {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: clamp(22px, 2.4vw, 32px);
+      line-height: 1.25;
+      color: var(--black);
+      margin-bottom: 32px;
+    }
+
+    .founder-quote em {
+      font-style: normal;
+      color: var(--orange);
+    }
+
+    .founder-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--black);
+      letter-spacing: 0.04em;
+    }
+
+    .founder-title {
+      font-size: 12px;
+      color: #555555;
+      margin-top: 2px;
+      font-weight: 400;
+    }
+
+    .founder-divider {
+      width: 32px;
+      height: 2px;
+      background: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    /* PROBLEM STRIP */
+    .problem-strip {
+      background: var(--orange);
+      padding: 28px 64px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow: hidden;
+      flex-wrap: wrap;
+    }
+
+    .problem-strip-text {
+      font-family: 'Oswald', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .strip-sep {
+      width: 4px;
+      height: 4px;
+      background: var(--white);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* PROBLEM SECTION */
+    .problem-section {
+      background: var(--white);
+      padding: 120px 64px;
+    }
+
+    .problem-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .problem-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .problem-h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--black);
+      margin-bottom: 24px;
+    }
+
+    .problem-body {
+      font-size: 16px;
+      line-height: 1.75;
+      color: #222222;
+    }
+
+    .pain-list {
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pain-item {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .pain-item:last-child { border-bottom: none; }
+
+    .pain-bullet {
+      width: 6px;
+      height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    .pain-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333333;
+    }
+
+    .pain-text strong {
+      font-weight: 600;
+      color: var(--black);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* FEATURES */
+    .features-section {
+      background: var(--black);
+      padding: 120px 64px;
+    }
+
+    .features-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 64px;
+      gap: 40px;
+    }
+
+    .section-header h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--white);
+      max-width: 480px;
+    }
+
+    .section-header p {
+      font-size: 15px;
+      color: #C8C8C8;
+      max-width: 320px;
+      line-height: 1.65;
+      text-align: right;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--black);
+      padding: 40px 32px;
+      transition: background 0.15s;
+    }
+
+    .feature-card:hover { background: #181818; }
+
+    .feature-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: 0.01em;
+      line-height: 1.2;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: #C8C8C8;
+    }
+
+    /* FOR WHO */
+    .forwho-section {
+      background: var(--white);
+      padding: 120px 64px;
+    }
+
+    .forwho-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .forwho-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .forwho-h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(36px, 3.5vw, 52px);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--black);
+      max-width: 560px;
+      margin-bottom: 16px;
+    }
+
+    .forwho-sub {
+      font-size: 16px;
+      color: #444444;
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 56px;
+    }
+
+    .facility-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .facility-card {
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 6px;
+      padding: 28px 24px;
+      transition: border-color 0.15s;
+    }
+
+    .facility-card:hover {
+      border-color: var(--orange);
+    }
+
+    .facility-name {
+      font-family: 'Oswald', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 6px;
+    }
+
+    .facility-desc {
+      font-size: 13px;
+      color: #555555;
+      line-height: 1.5;
+    }
+
+    /* CTA FINAL */
+    .cta-final {
+      background: var(--black);
+      padding: 160px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-final::before {
+      content: 'TMRW';
+      position: absolute;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 340px;
+      color: rgba(255,255,255,0.03);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+
+    .cta-final-inner { position: relative; z-index: 2; }
+
+    .cta-final h2 {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(44px, 5vw, 72px);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.0;
+      margin-bottom: 20px;
+    }
+
+    .cta-final h2 span { color: var(--orange); }
+
+    .cta-final p {
+      font-size: 16px;
+      color: #C8C8C8;
+      max-width: 400px;
+      margin: 0 auto 48px;
+      line-height: 1.65;
+    }
+
+    .cta-note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888888;
+      letter-spacing: 0.04em;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 32px 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-logo {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.12em;
+      color: var(--white);
+    }
+
+    .footer-tagline {
+      font-size: 11px;
+      color: #666666;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .footer-links { display: flex; gap: 28px; }
+
+    .footer-link {
+      font-size: 12px;
+      color: #999999;
+      text-decoration: none;
+      transition: color 0.12s;
+      letter-spacing: 0.02em;
+    }
+
+    .footer-link:hover { color: var(--white); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-link { display: none; }
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-left { padding: 80px 32px 60px; }
+      .hero-left::after { display: none; }
+      .hero-right { padding: 60px 32px 80px; border-top: 3px solid var(--orange); }
+      .problem-strip { padding: 20px 32px; }
+      .problem-section { padding: 80px 32px; }
+      .problem-inner { grid-template-columns: 1fr; gap: 48px; }
+      .features-section { padding: 80px 32px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .section-header { flex-direction: column; align-items: flex-start; }
+      .section-header p { text-align: left; }
+      .forwho-section { padding: 80px 32px; }
+      .facility-grid { grid-template-columns: repeat(2, 1fr); }
+      .cta-final { padding: 100px 32px; }
+      .cta-final::before { font-size: 160px; }
+      footer { padding: 28px 32px; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .facility-grid { grid-template-columns: 1fr; }
+      .hero-h1 { font-size: 44px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="logo">TMRW<span class="logo-dot">.</span></a>
+    <div class="nav-right">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#who" class="nav-link">Who it's for</a>
+      <a href="https://usetmrw.com/request-access" class="nav-btn">Request Access</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">Know Tomorrow</p>
+      <h1 class="hero-h1">Your staff<br>deserves to<br><span class="accent">know tomorrow.</span></h1>
+      <p class="hero-sub">TMRW gives every operator a smarter way to schedule — and gives every employee the clarity they've always deserved.</p>
+      <div class="hero-actions">
+        <a href="https://usetmrw.com/request-access" class="btn-primary">Request Early Access</a>
+        <a href="#features" class="btn-ghost">See how it works</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <p class="founder-label">Why this exists</p>
+      <div class="founder-divider"></div>
+      <p class="founder-quote">I built TMRW because I was the employee who <em>didn't know when I was supposed to work.</em> A text from my manager, maybe a phone call. No confirmation. No clarity. Just uncertainty — and that felt like it could be fixed.</p>
+      <div>
+        <p class="founder-name">Daniel Fuchs</p>
+        <p class="founder-title">Founder, TMRW — built from inside the industry</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ORANGE STRIP -->
+  <div class="problem-strip">
+    <span class="problem-strip-text">Independent Facility Operators</span>
+    <div class="strip-sep"></div>
+    <span class="problem-strip-text">Owner-Operated</span>
+    <div class="strip-sep"></div>
+    <span class="problem-strip-text">Classes · Events · Birthday Parties · Programs</span>
+    <div class="strip-sep"></div>
+    <span class="problem-strip-text">Know Tomorrow</span>
+  </div>
+
+  <!-- PROBLEM -->
+  <section class="problem-section">
+    <div class="problem-inner">
+      <div>
+        <p class="problem-eyebrow">The problem</p>
+        <h2 class="problem-h2">Scheduling at independent facilities is still broken.</h2>
+        <p class="problem-body">Most tools were built for enterprises or gyms with HR departments. Independent facility operators — the owner who teaches the classes, runs the front desk, and texts staff their schedule, all before noon — are still piecing it together with group chats and paper. TMRW fixes the entire loop.</p>
+      </div>
+      <div class="pain-list">
+        <div class="pain-item">
+          <div class="pain-bullet"></div>
+          <div class="pain-text"><strong>Staff don't know when they work</strong>A text from a manager, maybe a phone call. No confirmation, no clarity. Employees show up uncertain about their own schedule.</div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-bullet"></div>
+          <div class="pain-text"><strong>Coverage is a fire drill every time</strong>Someone can't make a shift and the manager is back on the phone, personally tracking down a replacement.</div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-bullet"></div>
+          <div class="pain-text"><strong>Time off requests fall through the cracks</strong>Texted to a manager who's also teaching a class, running the front desk, and answering emails. No record. No process.</div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-bullet"></div>
+          <div class="pain-text"><strong>Scheduling eats hours every week</strong>Time that should go toward running a great facility goes toward logistics that should be automatic.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section" id="features">
+    <div class="features-inner">
+      <div class="section-header">
+        <h2>Everything you need to run your schedule. <span style="color: var(--orange);">Nothing you don't.</span></h2>
+        <p>Most scheduling tools weren't built for you. They were built for someone else entirely — and it shows.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <h3>Schedules Built in Minutes</h3>
+          <p>Create shifts and events, assign staff, and manage your full roster — all in one place.</p>
+        </div>
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg>
+          <h3>Employees Always Know</h3>
+          <p>Every staff member sees their upcoming shifts from their phone. Changes push instantly. No one has to ask when they work.</p>
+        </div>
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3>Coverage Without Chaos</h3>
+          <p>Staff submit coverage requests in the app. Managers assign a replacement directly. No phone calls. No scrambling.</p>
+        </div>
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <h3>Time Off, Organized</h3>
+          <p>Employees request time off in the app. Managers approve or decline with one tap. Every request is logged, visible, and tracked.</p>
+        </div>
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          <h3>Roles That Make Sense</h3>
+          <p>Manager, Lead, Assistant — each role has the right level of access. No one sees more than they need to. No one sees less.</p>
+        </div>
+        <div class="feature-card">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#F55C00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px;"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <h3>Up and Running Fast</h3>
+          <p>Invite your team, build your first schedule, and you're live — same day. We'll make sure of it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOR WHO -->
+  <section class="forwho-section" id="who">
+    <div class="forwho-inner">
+      <p class="forwho-eyebrow">Who it's for</p>
+      <h2 class="forwho-h2">Built for owner-operators who run the show themselves.</h2>
+      <p class="forwho-sub">If you're the owner who also manages the schedule, fields the calls, and figures it out as you go — TMRW was built for exactly your situation.</p>
+      <div class="facility-grid">
+        <div class="facility-card">
+          <div class="facility-name">Martial Arts Studios</div>
+        </div>
+        <div class="facility-card">
+          <div class="facility-name">Swim Clubs</div>
+        </div>
+        <div class="facility-card">
+          <div class="facility-name">Gymnastics Academies</div>
+        </div>
+        <div class="facility-card">
+          <div class="facility-name">Dance Studios</div>
+        </div>
+        <div class="facility-card">
+          <div class="facility-name">Fitness Studios</div>
+        </div>
+        <div class="facility-card">
+          <div class="facility-name">Sports Facilities</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 12px;">
+        <div class="facility-card" style="width: calc(50% - 6px); text-align: center; white-space: nowrap;">
+          <div class="facility-name">Birthday Party Venues</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-final">
+    <div class="cta-final-inner">
+      <h2>Ready to <span>know tomorrow?</span></h2>
+      <p>TMRW is in early access. Request your spot and we'll be in touch within 24 hours.</p>
+      <a href="https://usetmrw.com/request-access" class="btn-primary" style="font-size: 15px; padding: 15px 36px; display: inline-block;">Request Early Access</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <span class="footer-logo">TMRW<span class="logo-dot">.</span></span>
+      <span class="footer-tagline">Know Tomorrow</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://usetmrw.com" class="footer-link">App Login</a>
+      <a href="mailto:daniel@usetmrw.com" class="footer-link">Contact</a>
+    </div>
+  </footer>
+
+</body>
+</html>

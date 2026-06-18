@@ -489,6 +489,35 @@
       border-color: var(--orange);
     }
 
+    .birthday-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    .birthday-card {
+      width: calc(33.333% - 8px);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 560px) {
+      .birthday-wrap {
+        display: block;
+      }
+      .birthday-card {
+        width: 100%;
+        white-space: normal;
+        text-align: left;
+      }
+    }
+
+    @media (min-width: 561px) {
+      .birthday-card {
+        text-align: center;
+      }
+    }
+
     .facility-name {
       font-family: 'Oswald', sans-serif;
       font-size: 18px;
@@ -825,8 +854,8 @@
           <div class="facility-name">Sports Facilities</div>
         </div>
       </div>
-      <div style="display: flex; justify-content: center; margin-top: 12px;">
-        <div class="facility-card" style="width: calc(33.333% - 8px); text-align: center; white-space: nowrap; margin: 0 6px;">
+      <div class="birthday-wrap">
+        <div class="facility-card birthday-card">
           <div class="facility-name">Birthday Party Venues</div>
         </div>
       </div>
